@@ -1,17 +1,13 @@
-# Lab-9.3: Event Handling
+# SBA-9: React Dashboard Application
 **Author:** Jameka Haggins 
+
+In this assessment, you will apply the skills you have developed throughout your React training to build a functional, real-world dashboard application. This project will test your understanding of React components, state management, TypeScript integration, form handling, and component composition.
 ---
+## Reflection
 
-## Reflection Questions
-1. How did you ensure unique keys for your list items?
-2. What considerations did you make when implementing the filtering functionality?
-3. How did you handle state updates for task status changes?
-4. What challenges did you face when implementing conditional rendering?
----
-Since each task in the data set already had a unique id (like "1", "2", etc.), I used that as the key prop when mapping through the tasks. I made sure to avoid using the array index as a key because, in a task manager, you're constantly deleting or re-filtering items. If I used indexes, React might get confused about which task is which when the list order changes, which can lead to weird visual bugs.
+Using TypeScript to create a "safety net" for the data, I defind a Task interface in types/index.ts, I ensured that every task had a title, priority, and status. This prevented  bugs where I might accidentally call a property the wrong name (something I have done a lot of in the past). Focusing on Component Composition, instead of one giant file, I broke the app into small pieces like TaskItem and TaskForm. This made the code easier to read and manage. I used useState to keep track of the list of tasks and useEffect to save everything to localStorage so the user doesn't lose their data when they refresh the page.
 
-The biggest thing I realized was that I shouldn't actually delete the "hidden" tasks from the main state; I just needed to filter the view. I created a derived variable called `filteredTasks` that checks the current filter settings (like "pending" or "high priority") and only shows the items that match. This way, if the user clears the filter, all their tasks are still safely there in the original state.
+Managing the Filter state across different components was tricky. I needed the TaskList to know what the TaskFilter was doing.
+The solutuion? I lifted the state up to the Dashboard component. By keeping the "filter" and "search" values in the parent, I could easily tell the list exactly which tasks to show. Another challenge was Health hurdles. Dealing with an ear infection while coding made it difficult to focus on complex logic.I broke the development into very small, 20-minute sessions and used clear TypeScript interfaces to help me remember where I left off without getting overwhelmed.
 
-I used an immutable update pattern. When a user clicks a button to change a task from "pending" to "completed," I used .map() to go through the task array. I’d check if the task ID matched the one being changed; if it did, I’d return a new object with the updated status. If not, I’d just return the task as-is. This ensures I’m never directly mutating the original state, which keeps React’s rendering predictable.
-
-Managing different looks for the tasks based on their priority and status was a bit like a puzzle. I had to decide which approach to use: ternary operators inside the JSX for small things (like changing a text color) or separate logic blocks for bigger changes. I didn't get around to changing the color of the task based on anything other than complete...I just kind of ragequit after that.
+Finally State Management, The 'Brain' (Dashboard) holds all the info, and the 'Hands' (Form/List) just do what the brain tells them to do. Using the good ol' KISS Method.
